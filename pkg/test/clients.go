@@ -61,6 +61,11 @@ func NewClients(configPath string, clusterName string) (*Clients, error) {
 		return nil, err
 	}
 
+	clients.OLM, err = olmversioned.NewForConfig(cfg)
+	if err != nil {
+		return nil, err
+	}
+
 	clients.Config = cfg
 	return clients, nil
 }
