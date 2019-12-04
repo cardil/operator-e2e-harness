@@ -4,5 +4,6 @@ import "log"
 
 func Generate() string {
 	log.Print("Generating catalog source...")
-	return execute(execpath())
+	out, _ := capture(execpath())
+	return out
 }

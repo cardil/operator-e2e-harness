@@ -3,6 +3,7 @@ package test
 import (
 	olmversioned "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"k8s.io/client-go/dynamic"
+	k8sv1 "k8s.io/client-go/kubernetes/typed/apps/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"knative.dev/pkg/test"
@@ -16,6 +17,7 @@ type Clients struct {
 	Dynamic    dynamic.Interface
 	Config     *rest.Config
 	OLM        olmversioned.Interface
+	Apps       *k8sv1.AppsV1Client
 }
 
 // Context holds objects related to test execution
@@ -55,6 +57,11 @@ func NewClients(configPath string, clusterName string) (*Clients, error) {
 		return nil, err
 	}
 
+	clients.Apps, err = k8sv1.NewForConfig(cfg)
+	if err != nil {
+		return nil, err
+	}
+
 	clients.Config = cfg
 	return clients, nil
 }
@@ -89,7 +96,7 @@ func contextAtIndex(i int, role string, t *testing.T) *Context {
 func setupContextsOnce(t *testing.T) {
 	if len(contexts) == 0 {
 		for _, cfg := range Kubeconfigs {
-			clients, err := NewClients(cfg, path.Base(cfg))
+			clients, err := NewClients(cfg, "")
 			if err != nil {
 				t.Fatalf("Couldn't initialize clients for config %s: %v", cfg, err)
 			}

@@ -3,6 +3,7 @@ package catalogsource
 import (
 	"github.com/pkg/errors"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 )
@@ -21,7 +22,10 @@ func calculateDefaultPath() string {
 	if err != nil {
 		panic(errors.WithMessage(err, "Can't get working directory"))
 	}
-	return path.Join(wd, "hack", "catalog.sh")
+	rootdir := path.Dir(path.Dir(wd))
+	path := path.Join(rootdir, "hack", "catalog.sh")
+	log.Printf("Default catalog source generator script path: %s", path)
+	return path
 }
 
 func execpath() string {
