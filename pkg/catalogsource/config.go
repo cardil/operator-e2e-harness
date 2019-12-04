@@ -23,9 +23,9 @@ func calculateDefaultPath() string {
 		panic(errors.WithMessage(err, "Can't get working directory"))
 	}
 	rootdir := path.Dir(path.Dir(wd))
-	path := path.Join(rootdir, "hack", "catalog.sh")
-	log.Printf("Default catalog source generator script path: %s", path)
-	return path
+	catalogPath := path.Join(rootdir, "hack", "catalog.sh")
+	log.Printf("Default catalog source generator script path: %s", catalogPath)
+	return catalogPath
 }
 
 func execpath() string {

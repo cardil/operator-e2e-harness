@@ -3,7 +3,7 @@ package config
 import "time"
 
 var OperatorsNamespace = "openshift-operators"
-var Channel = "techpreview"
+var Channel = "stable"
 
 type PollingConfig struct {
 	// Interval specifies the time between two polls.
